@@ -177,10 +177,54 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: EdgeInsets.only(top: mq.height * .01),
                                 physics: const BouncingScrollPhysics(),
                                 itemBuilder: (context, index) {
-                                  return ChatUserCard(
-                                      user: _isSearching
-                                          ? _searchList[index]
-                                          : _list[index]);
+                                  return Dismissible(
+                                    key: Key(_list[index].id), // Ensure unique key
+                                    background: Container(
+                                      color: Colors.red,
+                                      alignment: Alignment.centerRight,
+                                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                      child: Icon(Icons.delete, color: Colors.white),
+                                    ),
+                                    direction: DismissDirection.endToStart,
+                                    confirmDismiss: (direction) async {
+                                      final bool confirmDelete = await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Confirm Delete'),
+                                            content: Text('Are you sure you want to delete this user?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop(false); // Return false (cancel)
+                                                },
+                                                child: Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop(true); // Return true (confirm)
+                                                },
+                                                child: Text('OK'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                      return confirmDelete;
+                                    },
+                                    onDismissed: (direction) {
+                                      // Only delete if confirmDismiss returned true (user clicked OK)
+                                      if (direction == DismissDirection.endToStart) {
+                                        // Call deleteUser method with the correct user object
+                                        APIs.deleteUser(_list[index]);
+                                      }
+                                    },
+                                    child: ChatUserCard(
+                                      user: _isSearching ? _searchList[index] : _list[index],
+                                    ),
+                                  );
+
+
                                 });
                           } else {
                             return const Center(

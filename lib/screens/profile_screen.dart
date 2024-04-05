@@ -279,7 +279,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Navigator.pop(context);
                         }
                       },
-                      child: Image.asset('asstes/images/img_camera.png')),
+                      child: Image.asset('assets/images/img_camera.png')),
                 ],
               )
             ],

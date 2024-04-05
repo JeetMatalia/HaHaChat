@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:circular_image/circular_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,30 +15,37 @@ class ProfileDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
-    return AlertDialog(
-      contentPadding: EdgeInsets.zero,
+    return Dialog(
+      //contentPadding: EdgeInsets.zero,
       backgroundColor: Colors.white.withOpacity(.9),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      content: SizedBox(
-        width: mq.size.width * .6,
-        height: mq.size.height * .45,
+      //content:
+      child : Container(
+
+         width: mq.size.width * .6,
+         height: mq.size.height * .38,
         child: Stack(
           children: [
             // User profile picture
-            Positioned(
-              top: mq.size.height * .075,
-              left: mq.size.width * .1,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(mq.size.height * .25),
-                child: CachedNetworkImage(
-                  width: mq.size.width * .5,
-                  fit: BoxFit.cover,
-                  imageUrl: user.image,
-                  errorWidget: (context, url, error) =>
-                  const CircleAvatar(child: Icon(Icons.person)),
+            Center(
+              child: Positioned(
+                //top: mq.size.height * 0.85, //
+                //left: mq.size.width * 0.15, //
+                child : Center(
+                  child: ClipOval(
+                    child: CachedNetworkImage(
+                      width: mq.size.width * 0.5,
+                      fit: BoxFit.cover,
+                      imageUrl: user.image,
+                      errorWidget: (context, url, error) => const CircleAvatar(child: Icon(Icons.person)),
+                    ),
+                  ),
                 ),
+
+
               ),
             ),
+
 
             // User name
             Positioned(

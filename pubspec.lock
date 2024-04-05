@@ -81,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  circular_image:
+    dependency: "direct main"
+    description:
+      name: circular_image
+      sha256: "9d030a707143aee35123447db08224a1aa93a986f29fd12451ea0ad22eab41fa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   cli_util:
     dependency: transitive
     description:

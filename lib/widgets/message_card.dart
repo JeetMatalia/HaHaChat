@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
-
 import '../api/apis.dart';
 import '../helper/dialogs.dart';
 import '../helper/my_date_util.dart';
@@ -74,14 +73,13 @@ class _MessageCardState extends State<MessageCard> {
           child: GestureDetector(
             onTap: () {
               if (widget.message.type == Type.image) {
-                Navigator.push(context, MaterialPageRoute(builder: (context)
-                =>
-                    FullScreenImage(imageUrl: widget.message.msg,)
-              ));
-
-
-
-            }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FullScreenImage(
+                              imageUrl: widget.message.msg,
+                            )));
+              }
             },
             child: Container(
               padding: EdgeInsets.all(widget.message.type == Type.image
@@ -99,26 +97,26 @@ class _MessageCardState extends State<MessageCard> {
                       bottomRight: Radius.circular(30))),
               child: widget.message.type == Type.text
                   ?
-              //show text
-              Text(
-                widget.message.msg,
-                style: const TextStyle(fontSize: 15, color: Colors.black87),
-              )
+                  //show text
+                  Text(
+                      widget.message.msg,
+                      style:
+                          const TextStyle(fontSize: 15, color: Colors.black87),
+                    )
                   :
-              //show image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: CachedNetworkImage(
-                  imageUrl: widget.message.msg,
-                  placeholder: (context, url) =>
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                  errorWidget: (context, url, error) =>
-                  const Icon(Icons.image, size: 70),
-                ),
-              ),
+                  //show image
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.message.msg,
+                        placeholder: (context, url) => const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.image, size: 70),
+                      ),
+                    ),
             ),
           ),
         ),
@@ -181,26 +179,25 @@ class _MessageCardState extends State<MessageCard> {
                     bottomLeft: Radius.circular(30))),
             child: widget.message.type == Type.text
                 ?
-            //show text
-            Text(
-              widget.message.msg,
-              style: const TextStyle(fontSize: 15, color: Colors.black87),
-            )
+                //show text
+                Text(
+                    widget.message.msg,
+                    style: const TextStyle(fontSize: 15, color: Colors.black87),
+                  )
                 :
-            //show image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: CachedNetworkImage(
-                imageUrl: widget.message.msg,
-                placeholder: (context, url) =>
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-                errorWidget: (context, url, error) =>
-                const Icon(Icons.image, size: 70),
-              ),
-            ),
+                //show image
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.message.msg,
+                      placeholder: (context, url) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.image, size: 70),
+                    ),
+                  ),
           ),
         ),
       ],
@@ -229,44 +226,44 @@ class _MessageCardState extends State<MessageCard> {
 
               widget.message.type == Type.text
                   ?
-              //copy option
-              _OptionItem(
-                  icon: const Icon(Icons.copy_all_rounded,
-                      color: Colors.blue, size: 26),
-                  name: 'Copy Text',
-                  onTap: () async {
-                    await Clipboard.setData(
-                        ClipboardData(text: widget.message.msg))
-                        .then((value) {
-                      //for hiding bottom sheet
-                      Navigator.pop(context);
+                  //copy option
+                  _OptionItem(
+                      icon: const Icon(Icons.copy_all_rounded,
+                          color: Colors.blue, size: 26),
+                      name: 'Copy Text',
+                      onTap: () async {
+                        await Clipboard.setData(
+                                ClipboardData(text: widget.message.msg))
+                            .then((value) {
+                          //for hiding bottom sheet
+                          Navigator.pop(context);
 
-                      Dialogs.showSnackbar(context, 'Text Copied!');
-                    });
-                  })
+                          Dialogs.showSnackbar(context, 'Text Copied!');
+                        });
+                      })
                   :
-              //save option
-              _OptionItem(
-                  icon: const Icon(Icons.download_rounded,
-                      color: Colors.blue, size: 26),
-                  name: 'Save Image',
-                  onTap: () async {
-                    try {
-                      log('Image Url: ${widget.message.msg}');
-                      await GallerySaver.saveImage(widget.message.msg,
-                          albumName: 'We Chat')
-                          .then((success) {
-                        //for hiding bottom sheet
-                        Navigator.pop(context);
-                        if (success != null && success) {
-                          Dialogs.showSnackbar(
-                              context, 'Image Successfully Saved!');
+                  //save option
+                  _OptionItem(
+                      icon: const Icon(Icons.download_rounded,
+                          color: Colors.blue, size: 26),
+                      name: 'Save Image',
+                      onTap: () async {
+                        try {
+                          log('Image Url: ${widget.message.msg}');
+                          await GallerySaver.saveImage(widget.message.msg,
+                                  albumName: 'We Chat')
+                              .then((success) {
+                            //for hiding bottom sheet
+                            Navigator.pop(context);
+                            if (success != null && success) {
+                              Dialogs.showSnackbar(
+                                  context, 'Image Successfully Saved!');
+                            }
+                          });
+                        } catch (e) {
+                          log('ErrorWhileSavingImg: $e');
                         }
-                      });
-                    } catch (e) {
-                      log('ErrorWhileSavingImg: $e');
-                    }
-                  }),
+                      }),
 
               //separator or divider
               if (isMe)
@@ -291,15 +288,17 @@ class _MessageCardState extends State<MessageCard> {
               //delete option
               if (isMe)
                 _OptionItem(
-                    icon: const Icon(Icons.delete_forever,
-                        color: Colors.red, size: 26),
-                    name: 'Delete Message',
-                    onTap: () async {
-                      await APIs.deleteMessage(widget.message).then((value) {
-                        //for hiding bottom sheet
-                        Navigator.pop(context);
-                      });
-                    }),
+                  icon: const Icon(Icons.delete, color: Colors.red, size: 26),
+                  name: 'Delete Message',
+                  onTap: () {
+                    // Delete the message
+                    APIs.deleteMessage(widget.message);
+
+                    // Hide the bottom sheet
+                    Navigator.pop(context);
+                  },
+                ),
+
 
               //separator or divider
               Divider(
@@ -312,8 +311,7 @@ class _MessageCardState extends State<MessageCard> {
               _OptionItem(
                   icon: const Icon(Icons.remove_red_eye, color: Colors.blue),
                   name:
-                  'Sent At: ${MyDateUtil.getMessageTime(
-                      context: context, time: widget.message.sent)}',
+                      'Sent At: ${MyDateUtil.getMessageTime(context: context, time: widget.message.sent)}',
                   onTap: () {}),
 
               //read time
@@ -321,8 +319,7 @@ class _MessageCardState extends State<MessageCard> {
                   icon: const Icon(Icons.remove_red_eye, color: Colors.green),
                   name: widget.message.read.isEmpty
                       ? 'Read At: Not seen yet'
-                      : 'Read At: ${MyDateUtil.getMessageTime(
-                      context: context, time: widget.message.read)}',
+                      : 'Read At: ${MyDateUtil.getMessageTime(context: context, time: widget.message.read)}',
                   onTap: () {}),
             ],
           );
@@ -335,8 +332,7 @@ class _MessageCardState extends State<MessageCard> {
 
     showDialog(
         context: context,
-        builder: (_) =>
-            AlertDialog(
+        builder: (_) => AlertDialog(
               contentPadding: const EdgeInsets.only(
                   left: 24, right: 24, top: 20, bottom: 10),
 
@@ -366,30 +362,36 @@ class _MessageCardState extends State<MessageCard> {
               ),
 
               //actions
-              actions: [
-                //cancel button
-                MaterialButton(
-                    onPressed: () {
-                      //hide alert dialog
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(color: Colors.blue, fontSize: 16),
-                    )),
-
-                //update button
-                MaterialButton(
-                    onPressed: () {
-                      //hide alert dialog
-                      Navigator.pop(context);
-                      APIs.updateMessage(widget.message, updatedMsg);
-                    },
-                    child: const Text(
-                      'Update',
-                      style: TextStyle(color: Colors.blue, fontSize: 16),
-                    ))
-              ],
+          actions: [
+            // Cancel button
+            MaterialButton(
+              onPressed: () {
+                // Hide alert dialog
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.blue, fontSize: 16),
+              ),
+            ),
+            // Update button
+            Builder(
+              builder: (BuildContext context) {
+                return MaterialButton(
+                  onPressed: () {
+                    // Hide alert dialog
+                    Navigator.pop(context);
+                    // Use the new context to update the message
+                    APIs.updateMessage(widget.message, updatedMsg);
+                  },
+                  child: const Text(
+                    'Update',
+                    style: TextStyle(color: Colors.blue, fontSize: 16),
+                  ),
+                );
+              },
+            ),
+          ],
             ));
   }
 }
@@ -424,5 +426,3 @@ class _OptionItem extends StatelessWidget {
         ));
   }
 }
-
-

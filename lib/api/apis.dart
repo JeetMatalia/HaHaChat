@@ -81,6 +81,27 @@ class APIs {
     return (await firestore.collection('users').doc(user.uid).get()).exists;
   }
 
+
+
+// Assuming `email` is the email of the user you want to delete
+  static Future<void> deleteUser(ChatUser userr) async {
+    try {
+      // Delete all messages in conversation first
+      await deleteAllMessagesInConversation(userr);
+
+      // Get a reference to the current user's 'my_users' subcollection
+      final CollectionReference<Map<String, dynamic>> myUsersRef =
+      FirebaseFirestore.instance.collection('users').doc(user.uid).collection('my_users');
+
+      // Delete the document from the 'my_users' subcollection
+      await myUsersRef.doc(userr.id).delete();
+
+      print('User document deleted successfully from my_users collection');
+    } catch (e) {
+      print('Error deleting user document: $e');
+    }
+  }
+
   // for adding an chat user for our conversation
   static Future<bool> addChatUser(String email) async {
     final data = await firestore
@@ -323,6 +344,7 @@ class APIs {
         .doc(message.sent)
         .update({'msg': updatedMsg});
   }
+
 
   // Method to delete all chats at once
   // Method to delete all chats at once
